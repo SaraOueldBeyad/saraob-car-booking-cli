@@ -88,4 +88,38 @@ public class CarBookingService {
         return userBooking;
     }
 
+    public void getAllCarBookings() {
+        for (CarBooking carBooking : carBookingDao.getAllCarBookings()){
+            System.out.println(carBooking.toString());
+        }
+    }
+
+    public Car[] getAvailableCars(LocalDate startDate, LocalDate endDate){
+        Car[] cars = carDao.getAllCars();
+        CarBooking[] carBookings = carBookingDao.getAllCarBookings();
+        Car[] carsTemp = new Car[cars.length];
+        boolean isBooked = false;
+        int count = 0;
+        if ((startDate != null) && (endDate != null) && (startDate.isBefore(endDate))){
+            for (int i = 0; i < cars.length; i++) {
+                isBooked = false;
+                for (int j = 0; j < carBookings.length; j++) {
+                    if (carBookings[j].getCar().equals(cars[i]) &&
+                            !carBookings[j].getStartDate().isAfter(endDate) &&
+                            !carBookings[j].getEndDate().isBefore(startDate) &&
+                            carBookings[j].getStatus().equals(BookingStatus.ACTIVE)){
+                        isBooked = true;
+                        break;
+                    }
+                }
+                if (!isBooked){
+                   carsTemp[count] = cars[i];
+                   count++;
+                }
+            }
+        }
+        carsTemp = Arrays.copyOf(carsTemp, count);
+        return carsTemp;
+    }
+
 }

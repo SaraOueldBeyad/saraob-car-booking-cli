@@ -28,4 +28,7 @@ public class CarDao {
         return null;
     }
 
+    public Car[] getAllCars() {
+        return cars;
+    }
 }
