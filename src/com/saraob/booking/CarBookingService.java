@@ -61,4 +61,13 @@ public class CarBookingService {
         return carBooking;
     }
 
+    public CarBooking deleteBooking(UUID bookingId) {
+        CarBooking carBooking = carBookingDao.getBookingById(bookingId);
+        if (carBooking != null) {
+            carBooking.setStatus(BookingStatus.CANCELED);
+            return carBooking;
+        }
+        return null;
+    }
+
 }

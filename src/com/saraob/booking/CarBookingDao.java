@@ -35,4 +35,14 @@ public class CarBookingDao {
         return carBookingsTemp;
     }
 
+    public CarBooking getBookingById(UUID bookingId) {
+        if (bookingId != null) {
+            for (int i = 0; i < carBookings.length; i++) {
+                if (carBookings[i].getId().equals(bookingId)) {
+                    return carBookings[i];
+                }
+            }
+        }
+        return null;
+    }
 }

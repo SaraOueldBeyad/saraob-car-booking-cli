@@ -77,14 +77,11 @@ public class Main {
             );
             System.out.println(carBooking.toString());
 
-            CarBooking carBooking2 = carBookingService.bookCar(
-                    UUID.fromString("b10d126a-3608-4980-9f9c-aa179f5cebc3"),
-                    UUID.fromString("e18b42d7-6c95-4a31-8f27-b903de51a684"),
-                    LocalDate.now(),
-                    LocalDate.of(2026,9,25)
-            );
+            System.out.println(carBookingService.deleteBooking(carBooking.getId()).toString());
         } catch (IllegalStateException e) {
             System.out.println(e.getMessage());
+        } catch (NullPointerException e) {
+            System.out.println("Please provide a valid booking ID.");
         }
     }
 }
