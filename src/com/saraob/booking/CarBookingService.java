@@ -59,6 +59,8 @@ public class CarBookingService {
 
         carBookingDao.saveBooking(carBooking);
 
+        System.out.println("You booking was successful.");
+
         return carBooking;
     }
 
@@ -66,6 +68,7 @@ public class CarBookingService {
         CarBooking carBooking = carBookingDao.getBookingById(bookingId);
         if (carBooking != null) {
             carBooking.setStatus(BookingStatus.CANCELED);
+            System.out.println("Your booking was successfully cancelled.");
             return carBooking;
         }
         return null;
@@ -88,10 +91,8 @@ public class CarBookingService {
         return userBooking;
     }
 
-    public void getAllCarBookings() {
-        for (CarBooking carBooking : carBookingDao.getAllCarBookings()){
-            System.out.println(carBooking.toString());
-        }
+    public CarBooking[] getAllCarBookings() {
+        return carBookingDao.getAllCarBookings();
     }
 
     public Car[] getAvailableCars(LocalDate startDate, LocalDate endDate){
