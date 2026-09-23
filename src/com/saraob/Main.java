@@ -16,7 +16,9 @@ public class Main {
     public static void main(String[] args) {
 
         Scanner scnr = new Scanner(System.in);
+
         CarBookingService carBookingService = new CarBookingService();
+
         int choice = 0;
 
         do {
