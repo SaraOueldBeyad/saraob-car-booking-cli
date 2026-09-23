@@ -1,5 +1,6 @@
 package com.saraob;
 
+import com.saraob.car.CarDao;
 import com.saraob.user.User;
 import com.saraob.user.UserDao;
 
@@ -10,5 +11,8 @@ public class Main {
 
         UserDao user = new UserDao();
         System.out.println(user.getUserById(UUID.fromString("3f7f0c5d-83b2-4d1a-a8b2-2c2d4f9e1a11")));
+
+        CarDao car = new CarDao();
+        System.out.println(car.getCarById(UUID.fromString("e18b42d7-6c95-4a31-8f27-b903de51a684")));
     }
 }
