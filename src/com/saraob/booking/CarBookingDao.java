@@ -1,6 +1,10 @@
 package com.saraob.booking;
 
+import com.saraob.car.Car;
+import com.saraob.car.CarDao;
+
 import java.util.Arrays;
+import java.util.UUID;
 
 public class CarBookingDao {
 

@@ -8,12 +8,14 @@ import com.saraob.user.UserDao;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
 public class CarBookingService {
 
     UserDao userDao = new UserDao();
     CarDao carDao = new CarDao();
+    CarBookingDao carBookingDao = new CarBookingDao();
 
     public CarBooking bookCar(UUID userId, UUID carId, LocalDate startDate, LocalDate endDate) {
 
@@ -31,9 +33,32 @@ public class CarBookingService {
             throw new IllegalArgumentException("Please enter valid dates!");
         }
 
-        CarBooking carBooking = new CarBooking(UUID.randomUUID(), user, car, startDate, endDate, BigDecimal.ONE, BookingStatus.ACTIVE, LocalDateTime.now()); //FIXME
+        CarBooking[] carBookings = carBookingDao.getAllCarBookings();
 
-        return null; //FIXME
+        for (int i = 0; i < carBookings.length; i++) {
+            if (carBookings[i].getCar().equals(car) && carBookings[i].getStatus().equals(BookingStatus.ACTIVE)) {
+                throw new IllegalStateException("reject: the car is not available.");
+            }
+        }
+
+        long days = ChronoUnit.DAYS.between(startDate, endDate);
+
+        BigDecimal rentalPrice = car.getRentalPricePerDay().multiply(BigDecimal.valueOf(days));
+
+        CarBooking carBooking = new CarBooking(
+                UUID.randomUUID(),
+                user,
+                car,
+                startDate,
+                endDate,
+                rentalPrice,
+                BookingStatus.ACTIVE,
+                LocalDateTime.now()
+        );
+
+        carBookingDao.saveBooking(carBooking);
+
+        return carBooking;
     }
 
 }
