@@ -69,15 +69,41 @@ public class Main {
 //        }
 
         try {
-            CarBooking carBooking = carBookingService.bookCar(
-                   UUID.fromString("3f7f0c5d-83b2-4d1a-a8b2-2c2d4f9e1a11"),
-                   UUID.fromString("e18b42d7-6c95-4a31-8f27-b903de51a684"),
-                   LocalDate.now(),
-                   LocalDate.of(2026,9,25)
-            );
-            System.out.println(carBooking.toString());
+//            CarBooking carBooking = carBookingService.bookCar(
+//                   UUID.fromString("3f7f0c5d-83b2-4d1a-a8b2-2c2d4f9e1a11"),
+//                   UUID.fromString("e18b42d7-6c95-4a31-8f27-b903de51a684"),
+//                   LocalDate.now(),
+//                   LocalDate.of(2026,9,25)
+//            );
+//            System.out.println(carBooking.toString());
+//
+//            System.out.println(carBookingService.deleteBooking(carBooking.getId()).toString());
 
-            System.out.println(carBookingService.deleteBooking(carBooking.getId()).toString());
+            CarBooking booking1 = carBookingService.bookCar(
+                    UUID.fromString("8ca51d2b-aaaf-4bf2-834a-e02964e10fc3"),
+                    UUID.fromString("a7d91f3c-2b84-4e65-9a12-cf8301d6b742"),
+                    LocalDate.of(2026, 9, 25),
+                    LocalDate.of(2026, 9, 28)
+            );
+
+            CarBooking booking2 = carBookingService.bookCar(
+                    UUID.fromString("8ca51d2b-aaaf-4bf2-834a-e02964e10fc3"),
+                    UUID.fromString("3c5e8a91-f240-47bd-b6e9-15a72c804df3"),
+                    LocalDate.of(2026, 10, 5),
+                    LocalDate.of(2026, 10, 7)
+            );
+
+            CarBooking booking3 = carBookingService.bookCar(
+                    UUID.fromString("b10d126a-3608-4980-9f9c-aa179f5cebc3"),
+                    UUID.fromString("5f2a9c68-d173-4eb0-a451-7d86c329f10e"),
+                    LocalDate.of(2026, 10, 10),
+                    LocalDate.of(2026, 10, 13)
+            );
+
+            for (CarBooking carBooking : carBookingService.getUserBookedCars(UUID.fromString("8ca51d2b-aaaf-4bf2-834a-e02964e10fc3"))){
+                System.out.println(carBooking.toString());
+            }
+
         } catch (IllegalStateException e) {
             System.out.println(e.getMessage());
         } catch (NullPointerException e) {

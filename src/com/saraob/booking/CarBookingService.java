@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
 import java.util.UUID;
 
 public class CarBookingService {
@@ -68,6 +69,23 @@ public class CarBookingService {
             return carBooking;
         }
         return null;
+    }
+
+    public CarBooking[] getUserBookedCars(UUID userId) {
+        int length = carBookingDao.getAllCarBookings().length;
+        CarBooking[] userBooking = new CarBooking[length];
+        CarBooking[] carBookings = carBookingDao.getAllCarBookings();
+        int count = 0;
+        if (userId != null) {
+            for (int i = 0; i < length; i++) {
+                if (carBookings[i].getUser().getId().equals(userId)){
+                    userBooking[count] = carBookings[i];
+                    count++;
+                }
+            }
+        }
+        userBooking = Arrays.copyOf(userBooking, count);
+        return userBooking;
     }
 
 }
