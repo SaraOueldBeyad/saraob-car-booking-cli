@@ -7,8 +7,10 @@ import com.saraob.booking.CarBookingService;
 import com.saraob.car.Brand;
 import com.saraob.car.Car;
 import com.saraob.car.CarDao;
+import com.saraob.car.CarService;
 import com.saraob.user.User;
 import com.saraob.user.UserDao;
+import com.saraob.user.UserService;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -101,7 +103,7 @@ public class Main {
             );
 
 //            carBookingService.getAllCarBookings();
-            for (Car car : carBookingService.getAvailableCars(LocalDate.of(2026,9,23), LocalDate.of(2026,9,28))){
+            for (Car car : carBookingService.getAvailableElectricCars(LocalDate.of(2026,9,23), LocalDate.of(2026,9,28))){
                 System.out.println(car.toString());
             }
 
@@ -110,5 +112,15 @@ public class Main {
         } catch (NullPointerException e) {
             System.out.println("Please provide a valid booking ID.");
         }
+
+//        UserService userService = new UserService();
+//        for (User user : userService.getAllUsers()) {
+//            System.out.println(user.toString());
+//        }
+
+//        CarService carService = new CarService();
+//        for (Car car : carService.getAllCars()){
+//            System.out.println(car.toString());
+//        }
     }
 }

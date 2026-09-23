@@ -122,4 +122,18 @@ public class CarBookingService {
         return carsTemp;
     }
 
+    public Car[] getAvailableElectricCars(LocalDate startDate, LocalDate endDate) {
+        Car[] cars = this.getAvailableCars(startDate, endDate);
+        Car[] carsTemp = new Car[cars.length];
+        int count = 0;
+        for (int i = 0; i < cars.length; i++) {
+            if (cars[i].isElectric()){
+                carsTemp[count] = cars[i];
+                count++;
+            }
+        }
+        carsTemp = Arrays.copyOf(carsTemp, count);
+        return carsTemp;
+    }
+
 }

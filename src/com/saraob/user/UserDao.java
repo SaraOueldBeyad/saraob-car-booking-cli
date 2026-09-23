@@ -27,4 +27,8 @@ public class UserDao {
         return null;
     }
 
+    public User[] getAllUser() {
+        return users;
+    }
+
 }
