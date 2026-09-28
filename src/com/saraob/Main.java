@@ -37,7 +37,8 @@ public class Main {
                 choice = scnr.nextInt();
                 scnr.nextLine();
             } catch (InputMismatchException e) {
-                System.out.println("Please enter a number from the menu: ");
+                System.out.println("Please enter a number from the menu.");
+                choice = 0;
                 scnr.nextLine();
             }
 
@@ -73,6 +74,8 @@ public class Main {
                         System.out.println(carBookingService.deleteBooking(bookingId));
                     } catch (IllegalArgumentException e) {
                         System.out.println("The provided booking ID is invalid.");
+                    } catch (NullPointerException e) {
+                        System.out.println("Please provide a valid booking ID");
                     }
                 }
                 case 3 -> {

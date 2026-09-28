@@ -37,12 +37,20 @@ public class CarBookingService {
         CarBooking[] carBookings = carBookingDao.getAllCarBookings();
 
         for (int i = 0; i < carBookings.length; i++) {
-            if (carBookings[i].getCar().equals(car) && carBookings[i].getStatus().equals(BookingStatus.ACTIVE)) {
+            if (carBookings[i].getCar().equals(car) &&
+                    carBookings[i].getStatus().equals(BookingStatus.ACTIVE) &&
+                    !carBookings[i].getStartDate().isAfter(endDate) &&
+                    !carBookings[i].getEndDate().isBefore(startDate)) {
                 throw new IllegalStateException("reject: the car is not available.");
             }
         }
 
         long days = ChronoUnit.DAYS.between(startDate, endDate);
+
+        if (days == 0) {
+            throw new IllegalArgumentException("Start date and end date cannot be the same day. \n" +
+                    "A booking must be at least 24 hours.");
+        }
 
         BigDecimal rentalPrice = car.getRentalPricePerDay().multiply(BigDecimal.valueOf(days));
 
