@@ -37,9 +37,10 @@ public class CarBookingDao {
 
     public CarBooking getBookingById(UUID bookingId) {
         if (bookingId != null) {
-            for (int i = 0; i < carBookings.length; i++) {
-                if (carBookings[i].getId().equals(bookingId)) {
-                    return carBookings[i];
+            CarBooking[] carBookingTab = this.getAllCarBookings();
+            for (int i = 0; i < carBookingTab.length; i++) {
+                if (carBookingTab[i].getId().equals(bookingId)) {
+                    return carBookingTab[i];
                 }
             }
         }
