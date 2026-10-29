@@ -2,8 +2,10 @@ package com.saraob.booking;
 
 import com.saraob.car.Car;
 import com.saraob.car.CarArrayDataAccessService;
+import com.saraob.car.CarDAO;
 import com.saraob.user.User;
 import com.saraob.user.UserArrayDataAccessService;
+import com.saraob.user.UserDAO;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -14,18 +16,24 @@ import java.util.UUID;
 
 public class CarBookingService {
 
-    UserArrayDataAccessService userArrayDataAccessService = new UserArrayDataAccessService();
-    CarArrayDataAccessService carArrayDataAccessService = new CarArrayDataAccessService();
-    CarBookingArrayDataAccessService carBookingArrayDataAccessService = new CarBookingArrayDataAccessService();
+    UserDAO userDAO;
+    CarDAO carDAO;
+    CarBookingDAO carBookingDAO;
+
+    public CarBookingService(CarBookingDAO carBookingDAO) {
+        this.carBookingDAO = carBookingDAO;
+        this.userDAO = new UserArrayDataAccessService();
+        carDAO = new CarArrayDataAccessService();
+    }
 
     public CarBooking bookCar(UUID userId, UUID carId, LocalDate startDate, LocalDate endDate) {
 
-        User user = userArrayDataAccessService.getUserById(userId);
+        User user = userDAO.getUserById(userId);
         if (user == null) {
             throw new IllegalArgumentException("No user found with the provided ID!");
         }
 
-        Car car = carArrayDataAccessService.getCarById(carId);
+        Car car = carDAO.getCarById(carId);
         if (car == null) {
             throw new IllegalArgumentException("No car found with the provided ID!");
         }
@@ -34,7 +42,7 @@ public class CarBookingService {
             throw new IllegalArgumentException("Please enter valid dates!");
         }
 
-        CarBooking[] carBookings = carBookingArrayDataAccessService.getAllCarBookings();
+        CarBooking[] carBookings = carBookingDAO.getAllCarBookings();
 
         for (int i = 0; i < carBookings.length; i++) {
             if (carBookings[i].getCar().equals(car) &&
@@ -65,7 +73,7 @@ public class CarBookingService {
                 LocalDateTime.now()
         );
 
-        carBookingArrayDataAccessService.saveBooking(carBooking);
+        carBookingDAO.saveBooking(carBooking);
 
         System.out.println("You booking was successful.");
 
@@ -73,7 +81,7 @@ public class CarBookingService {
     }
 
     public CarBooking deleteBooking(UUID bookingId) {
-        CarBooking carBooking = carBookingArrayDataAccessService.getBookingById(bookingId);
+        CarBooking carBooking = carBookingDAO.getBookingById(bookingId);
         if (carBooking != null) {
             carBooking.setStatus(BookingStatus.CANCELED);
             System.out.println("Your booking was successfully cancelled.");
@@ -83,9 +91,9 @@ public class CarBookingService {
     }
 
     public CarBooking[] getUserBookedCars(UUID userId) {
-        int length = carBookingArrayDataAccessService.getAllCarBookings().length;
+        int length = carBookingDAO.getAllCarBookings().length;
         CarBooking[] userBooking = new CarBooking[length];
-        CarBooking[] carBookings = carBookingArrayDataAccessService.getAllCarBookings();
+        CarBooking[] carBookings = carBookingDAO.getAllCarBookings();
         int count = 0;
         if (userId != null) {
             for (int i = 0; i < length; i++) {
@@ -100,12 +108,12 @@ public class CarBookingService {
     }
 
     public CarBooking[] getAllCarBookings() {
-        return carBookingArrayDataAccessService.getAllCarBookings();
+        return carBookingDAO.getAllCarBookings();
     }
 
     public Car[] getAvailableCars(LocalDate startDate, LocalDate endDate){
-        Car[] cars = carArrayDataAccessService.getAllCars();
-        CarBooking[] carBookings = carBookingArrayDataAccessService.getAllCarBookings();
+        Car[] cars = carDAO.getAllCars();
+        CarBooking[] carBookings = carBookingDAO.getAllCarBookings();
         Car[] carsTemp = new Car[cars.length];
         boolean isBooked = false;
         int count = 0;

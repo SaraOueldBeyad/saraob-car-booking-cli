@@ -58,7 +58,8 @@ public class MainTest {
                 LocalDateTime.now()
         );
 
-        CarBooking[] carBookings = {samiraBooking, jamesBooking};
+        carBookingFileDataAccessService.saveBooking(samiraBooking);
+        carBookingFileDataAccessService.saveBooking(jamesBooking);
 //        try (
 //                ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("carbooking.ser"))) {
 //                out.writeObject(carBookings);
