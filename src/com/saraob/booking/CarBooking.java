@@ -3,13 +3,14 @@ package com.saraob.booking;
 import com.saraob.car.Car;
 import com.saraob.user.User;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
-public class CarBooking {
+public class CarBooking implements Serializable {
 
     private UUID id;
     private User user;
