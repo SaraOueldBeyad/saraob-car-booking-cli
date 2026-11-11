@@ -46,4 +46,15 @@ public class CarBookingDao {
         }
         return null;
     }
+
+    public CarBooking deleteBookingById(UUID bookingId) {
+        CarBooking carBooking = this.getBookingById(bookingId);
+        if (carBooking != null) {
+            carBooking.setStatus(BookingStatus.CANCELED);
+            System.out.println("Your booking was successfully cancelled.");
+            return carBooking;
+        }
+        System.out.println("Your booking was not found.");
+        return null;
+    }
 }

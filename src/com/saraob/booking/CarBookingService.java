@@ -73,10 +73,8 @@ public class CarBookingService {
     }
 
     public CarBooking deleteBooking(UUID bookingId) {
-        CarBooking carBooking = carBookingDao.getBookingById(bookingId);
-        if (carBooking != null) {
-            carBooking.setStatus(BookingStatus.CANCELED);
-            System.out.println("Your booking was successfully cancelled.");
+        if (bookingId != null){
+            CarBooking carBooking = carBookingDao.deleteBookingById(bookingId);
             return carBooking;
         }
         return null;
