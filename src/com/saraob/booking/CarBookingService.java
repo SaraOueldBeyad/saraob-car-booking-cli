@@ -1,9 +1,9 @@
 package com.saraob.booking;
 
 import com.saraob.car.Car;
-import com.saraob.car.CarDao;
+import com.saraob.car.CarDaoArrayDataAccessService;
 import com.saraob.user.User;
-import com.saraob.user.UserDao;
+import com.saraob.user.UserDaoArrayDataAccessService;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -14,18 +14,22 @@ import java.util.UUID;
 
 public class CarBookingService {
 
-    UserDao userDao = new UserDao();
-    CarDao carDao = new CarDao();
-    CarBookingDao carBookingDao = new CarBookingDao();
+    UserDaoArrayDataAccessService userDaoArrayDataAccessService = new UserDaoArrayDataAccessService();
+    CarDaoArrayDataAccessService carDaoArrayDataAccessService = new CarDaoArrayDataAccessService();
+    CarBookingDAO carBookingDao;
+
+    public CarBookingService(CarBookingDAO carBookingDao) {
+        this.carBookingDao = carBookingDao;
+    }
 
     public CarBooking bookCar(UUID userId, UUID carId, LocalDate startDate, LocalDate endDate) {
 
-        User user = userDao.getUserById(userId);
+        User user = userDaoArrayDataAccessService.getUserById(userId);
         if (user == null) {
             throw new IllegalArgumentException("No user found with the provided ID!");
         }
 
-        Car car = carDao.getCarById(carId);
+        Car car = carDaoArrayDataAccessService.getCarById(carId);
         if (car == null) {
             throw new IllegalArgumentException("No car found with the provided ID!");
         }
@@ -102,7 +106,7 @@ public class CarBookingService {
     }
 
     public Car[] getAvailableCars(LocalDate startDate, LocalDate endDate){
-        Car[] cars = carDao.getAllCars();
+        Car[] cars = carDaoArrayDataAccessService.getAllCars();
         CarBooking[] carBookings = carBookingDao.getAllCarBookings();
         Car[] carsTemp = new Car[cars.length];
         boolean isBooked = false;

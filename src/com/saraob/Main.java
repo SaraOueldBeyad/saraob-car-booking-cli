@@ -1,6 +1,7 @@
 package com.saraob;
 
 import com.saraob.booking.CarBooking;
+import com.saraob.booking.CarBookingFileDataAccessService;
 import com.saraob.booking.CarBookingService;
 import com.saraob.car.Car;
 import com.saraob.user.User;
@@ -17,7 +18,9 @@ public class Main {
 
         Scanner scnr = new Scanner(System.in);
 
-        CarBookingService carBookingService = new CarBookingService();
+        CarBookingFileDataAccessService carBookingFileDataAccessService = new CarBookingFileDataAccessService("carBooking.dat");
+
+        CarBookingService carBookingService = new CarBookingService(carBookingFileDataAccessService);
 
         int choice = 0;
 
