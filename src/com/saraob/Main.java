@@ -1,9 +1,15 @@
 package com.saraob;
 
 import com.saraob.booking.CarBooking;
+import com.saraob.booking.CarBookingDAO;
+import com.saraob.booking.CarBookingFileDataAccessService;
 import com.saraob.booking.CarBookingService;
 import com.saraob.car.Car;
+import com.saraob.car.CarArrayDataAccessService;
+import com.saraob.car.CarDAO;
 import com.saraob.user.User;
+import com.saraob.user.UserArrayDataAccessService;
+import com.saraob.user.UserDAO;
 import com.saraob.user.UserService;
 
 import java.time.LocalDate;
@@ -17,7 +23,11 @@ public class Main {
 
         Scanner scnr = new Scanner(System.in);
 
-        CarBookingService carBookingService = new CarBookingService();
+        CarBookingDAO carBookingFileDataAccessService = new CarBookingFileDataAccessService("carBooking.dat");
+        CarDAO carDAO = new CarArrayDataAccessService();
+        UserDAO userDAO = new UserArrayDataAccessService();
+
+        CarBookingService carBookingService = new CarBookingService(carBookingFileDataAccessService, carDAO, userDAO);
 
         int choice = 0;
 

@@ -3,7 +3,7 @@ package com.saraob.car;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-public class CarDao {
+public class CarArrayDataAccessService implements CarDAO {
 
     private static final Car cars[];
 
