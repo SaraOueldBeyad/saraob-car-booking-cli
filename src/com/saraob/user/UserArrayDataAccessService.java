@@ -2,7 +2,7 @@ package com.saraob.user;
 
 import java.util.UUID;
 
-public class UserDaoArrayDataAccessService implements UserDAO {
+public class UserArrayDataAccessService implements UserDAO {
 
     private static final User[] users;
 

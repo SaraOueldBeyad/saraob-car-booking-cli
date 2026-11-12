@@ -2,9 +2,9 @@ package com.saraob.car;
 
 public class CarService {
 
-    CarDaoArrayDataAccessService carDaoArrayDataAccessService = new CarDaoArrayDataAccessService();
+    CarArrayDataAccessService carArrayDataAccessService = new CarArrayDataAccessService();
 
     public Car[] getAllCars() {
-        return carDaoArrayDataAccessService.getAllCars();
+        return carArrayDataAccessService.getAllCars();
     }
 }

@@ -20,11 +20,11 @@ public class CarBookingFileDataAccessService implements CarBookingDAO {
         carBookings[size] = carBooking;
 
         try {
-           FileOutputStream fos = new FileOutputStream(filePath);
-           ObjectOutputStream os = new ObjectOutputStream(fos);
-           os.writeObject(carBookings);
-           os.close();
-           fos.close();
+            FileOutputStream fos = new FileOutputStream(filePath);
+            ObjectOutputStream os = new ObjectOutputStream(fos);
+            os.writeObject(carBookings);
+            os.close();
+            fos.close();
             System.out.println("Car booking file has been saved successfully.");
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -35,19 +35,18 @@ public class CarBookingFileDataAccessService implements CarBookingDAO {
     @Override
     public CarBooking[] getAllCarBookings() {
         CarBooking[] carBookings = null;
+        File file = new File(filePath);
+        if (!file.exists() || file.length() == 0) {
+            return new CarBooking[0];
+        }
         try {
-            File file = new File(filePath);
-            if (!file.exists() || file.length() == 0) {
-                file.createNewFile();
-                return new CarBooking[0];
-            } else  {
-                FileInputStream fis = new FileInputStream(filePath);
-                ObjectInputStream ois = new ObjectInputStream(fis);
-                carBookings = (CarBooking[]) ois.readObject();
-                ois.close();
-                fis.close();
-                return carBookings;
-            }
+            FileInputStream fis = new FileInputStream(filePath);
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            carBookings = (CarBooking[]) ois.readObject();
+            ois.close();
+            fis.close();
+            return carBookings;
+
         } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -74,6 +73,15 @@ public class CarBookingFileDataAccessService implements CarBookingDAO {
                 if (carBookings[i].getId().equals(bookingId)) {
                     carBookings[i].setStatus(BookingStatus.CANCELED);
                     System.out.println("Your booking was successfully cancelled.");
+                    try {
+                        FileOutputStream fos = new FileOutputStream(filePath);
+                        ObjectOutputStream os = new ObjectOutputStream(fos);
+                        os.writeObject(carBookings);
+                        os.close();
+                        fos.close();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                     return carBookings[i];
                 }
             }
