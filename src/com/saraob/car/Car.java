@@ -7,6 +7,8 @@ import java.util.UUID;
 
 public class Car implements Serializable {
 
+    public static final long serialVersionUID = 2L;
+
     private UUID id;
     private String regNumber;
     private BigDecimal rentalPricePerDay;

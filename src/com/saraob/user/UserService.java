@@ -2,10 +2,14 @@ package com.saraob.user;
 
 public class UserService {
 
-    UserArrayDataAccessService userArrayDataAccessService = new UserArrayDataAccessService();
+    UserDAO userDAO;
+
+    public UserService(UserDAO userDAO) {
+        this.userDAO = userDAO;
+    }
 
     public User[] getAllUsers() {
-        return userArrayDataAccessService.getAllUser();
+        return userDAO.getAllUser();
     }
 
 }

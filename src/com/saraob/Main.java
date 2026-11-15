@@ -160,7 +160,7 @@ public class Main {
                     }
                 }
                 case 7 -> {
-                    UserService userService = new UserService();
+                    UserService userService = new UserService(userDAO);
                     for (User user : userService.getAllUsers()){
                         System.out.println(user);
                     }

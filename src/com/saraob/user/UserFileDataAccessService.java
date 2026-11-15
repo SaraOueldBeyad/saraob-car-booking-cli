@@ -31,7 +31,7 @@ public class UserFileDataAccessService implements UserDAO {
     public User[] getAllUser() {
         User[] users = null;
         File file = new File(filePath);
-        if (file.exists() || file.length() == 0) {
+        if (!file.exists() || file.length() == 0) {
             return new User[0];
         }
 
