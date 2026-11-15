@@ -2,9 +2,13 @@ package com.saraob.car;
 
 public class CarService {
 
-    CarDao carDao = new CarDao();
+    CarDAO carDAO;
+
+    public CarService(CarDAO carDAO) {
+        this.carDAO = carDAO;
+    }
 
     public Car[] getAllCars() {
-        return carDao.getAllCars();
+        return carDAO.getAllCars();
     }
 }

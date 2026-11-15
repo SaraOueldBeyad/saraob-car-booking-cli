@@ -1,9 +1,12 @@
 package com.saraob.user;
 
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
 
-public class User {
+public class User implements Serializable {
+
+    public static final long serialVersionUID = 3L;
 
     private UUID id;
     private String name;
