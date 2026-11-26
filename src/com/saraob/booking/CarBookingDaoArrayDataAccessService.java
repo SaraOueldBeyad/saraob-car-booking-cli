@@ -1,43 +1,28 @@
 package com.saraob.booking;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 public class CarBookingDaoArrayDataAccessService implements CarBookingDAO {
 
-    CarBooking[] carBookings = new CarBooking[20];
+    List<CarBooking> carBookings = new ArrayList<>();
 
     public void saveBooking(CarBooking carBooking) {
-        for (int i=0 ; i< carBookings.length ; i++) {
-            if (carBookings[i] == null) {
-                carBookings[i] = carBooking;
-                return;
-            }
-        }
-        int count = carBookings.length;
-        carBookings = Arrays.copyOf(carBookings, carBookings.length * 2);
-        carBookings[count] = carBooking;
+        carBookings.add(carBooking);
     }
 
-    public CarBooking[] getAllCarBookings() {
-        CarBooking[] carBookingsTemp = new CarBooking[carBookings.length];
-        int count = 0;
-        for (int i=0 ; i< carBookings.length ; i++) {
-            if (carBookings[i] != null) {
-                carBookingsTemp[count] = carBookings[i];
-                count++;
-            }
-        }
-        carBookingsTemp = Arrays.copyOf(carBookingsTemp, count);
-        return carBookingsTemp;
+    public List<CarBooking> getAllCarBookings() {
+        return carBookings;
     }
 
     public CarBooking getBookingById(UUID bookingId) {
         if (bookingId != null) {
-            CarBooking[] carBookingTab = this.getAllCarBookings();
-            for (int i = 0; i < carBookingTab.length; i++) {
-                if (carBookingTab[i].getId().equals(bookingId)) {
-                    return carBookingTab[i];
+            List<CarBooking> carBookingTab = this.getAllCarBookings();
+            for (int i = 0; i < carBookingTab.size(); i++) {
+                if (carBookingTab.get(i).getId().equals(bookingId)) {
+                    return carBookingTab.get(i);
                 }
             }
         }

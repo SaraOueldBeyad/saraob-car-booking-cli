@@ -11,7 +11,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 public class CarBookingService {
@@ -42,13 +44,13 @@ public class CarBookingService {
             throw new IllegalArgumentException("Please enter valid dates!");
         }
 
-        CarBooking[] carBookings = carBookingDao.getAllCarBookings();
+        List<CarBooking> carBookings = carBookingDao.getAllCarBookings();
 
-        for (int i = 0; i < carBookings.length; i++) {
-            if (carBookings[i].getCar().equals(car) &&
-                    carBookings[i].getStatus().equals(BookingStatus.ACTIVE) &&
-                    !carBookings[i].getStartDate().isAfter(endDate) &&
-                    !carBookings[i].getEndDate().isBefore(startDate)) {
+        for (int i = 0; i < carBookings.size(); i++) {
+            if (carBookings.get(i).getCar().equals(car) &&
+                    carBookings.get(i).getStatus().equals(BookingStatus.ACTIVE) &&
+                    !carBookings.get(i).getStartDate().isAfter(endDate) &&
+                    !carBookings.get(i).getEndDate().isBefore(startDate)) {
                 throw new IllegalStateException("reject: the car is not available.");
             }
         }
@@ -88,66 +90,56 @@ public class CarBookingService {
         return null;
     }
 
-    public CarBooking[] getUserBookedCars(UUID userId) {
-        int length = carBookingDao.getAllCarBookings().length;
-        CarBooking[] userBooking = new CarBooking[length];
-        CarBooking[] carBookings = carBookingDao.getAllCarBookings();
-        int count = 0;
+    public List<CarBooking> getUserBookedCars(UUID userId) {
+        List<CarBooking> userBooking = new ArrayList<>();
+        List<CarBooking> carBookings = carBookingDao.getAllCarBookings();
         if (userId != null) {
-            for (int i = 0; i < length; i++) {
-                if (carBookings[i].getUser().getId().equals(userId)){
-                    userBooking[count] = carBookings[i];
-                    count++;
+            for (int i = 0; i < carBookings.size(); i++) {
+                if (carBookings.get(i).getUser().getId().equals(userId)){
+                    userBooking.addAll(carBookings);
                 }
             }
         }
-        userBooking = Arrays.copyOf(userBooking, count);
         return userBooking;
     }
 
-    public CarBooking[] getAllCarBookings() {
+    public List<CarBooking> getAllCarBookings() {
         return carBookingDao.getAllCarBookings();
     }
 
-    public Car[] getAvailableCars(LocalDate startDate, LocalDate endDate){
-        Car[] cars = carDAO.getAllCars();
-        CarBooking[] carBookings = carBookingDao.getAllCarBookings();
-        Car[] carsTemp = new Car[cars.length];
+    public List<Car> getAvailableCars(LocalDate startDate, LocalDate endDate){
+        List<Car> cars = carDAO.getAllCars();
+        List<CarBooking> carBookings = carBookingDao.getAllCarBookings();
+        List<Car> carsTemp = new ArrayList<>();
         boolean isBooked = false;
-        int count = 0;
         if ((startDate != null) && (endDate != null) && (startDate.isBefore(endDate))){
-            for (int i = 0; i < cars.length; i++) {
+            for (int i = 0; i < cars.size(); i++) {
                 isBooked = false;
-                for (int j = 0; j < carBookings.length; j++) {
-                    if (carBookings[j].getCar().equals(cars[i]) &&
-                            !carBookings[j].getStartDate().isAfter(endDate) &&
-                            !carBookings[j].getEndDate().isBefore(startDate) &&
-                            carBookings[j].getStatus().equals(BookingStatus.ACTIVE)){
+                for (int j = 0; j < carBookings.size(); j++) {
+                    if (carBookings.get(j).getCar().equals(cars.get(i)) &&
+                            !carBookings.get(j).getStartDate().isAfter(endDate) &&
+                            !carBookings.get(j).getEndDate().isBefore(startDate) &&
+                            carBookings.get(j).getStatus().equals(BookingStatus.ACTIVE)){
                         isBooked = true;
                         break;
                     }
                 }
                 if (!isBooked){
-                   carsTemp[count] = cars[i];
-                   count++;
+                   carsTemp.add(cars.get(i));
                 }
             }
         }
-        carsTemp = Arrays.copyOf(carsTemp, count);
         return carsTemp;
     }
 
-    public Car[] getAvailableElectricCars(LocalDate startDate, LocalDate endDate) {
-        Car[] cars = this.getAvailableCars(startDate, endDate);
-        Car[] carsTemp = new Car[cars.length];
-        int count = 0;
-        for (int i = 0; i < cars.length; i++) {
-            if (cars[i].isElectric()){
-                carsTemp[count] = cars[i];
-                count++;
+    public List<Car> getAvailableElectricCars(LocalDate startDate, LocalDate endDate) {
+        List<Car> cars = this.getAvailableCars(startDate, endDate);
+        List<Car> carsTemp = new ArrayList<>();
+        for (int i = 0; i < cars.size(); i++) {
+            if (cars.get(i).isElectric()){
+                carsTemp.add(cars.get(i));
             }
         }
-        carsTemp = Arrays.copyOf(carsTemp, count);
         return carsTemp;
     }
 

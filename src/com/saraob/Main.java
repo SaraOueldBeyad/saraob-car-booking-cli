@@ -15,6 +15,7 @@ import com.saraob.user.UserService;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 import java.util.UUID;
 
@@ -93,9 +94,9 @@ public class Main {
                         System.out.print("Please enter user ID: ");
                         UUID userId = UUID.fromString(scnr.nextLine());
 
-                        CarBooking[] userBookings = carBookingService.getUserBookedCars(userId);
+                        List<CarBooking> userBookings = carBookingService.getUserBookedCars(userId);
 
-                        if (userBookings.length == 0) {
+                        if (userBookings.size() == 0) {
                             System.out.println("User has no bookings.");
                         } else {
                             for (CarBooking carBooking : userBookings) {
@@ -108,8 +109,8 @@ public class Main {
                     }
                 }
                 case 4 -> {
-                    CarBooking[] carBookings = carBookingService.getAllCarBookings();
-                    if (carBookings.length == 0){
+                    List<CarBooking> carBookings = carBookingService.getAllCarBookings();
+                    if (carBookings.size() == 0){
                         System.out.println("There is no bookings.");
                     } else {
                         for (CarBooking carBooking : carBookings){
@@ -125,9 +126,9 @@ public class Main {
                         System.out.print("Please enter a valid end date (YYYY-MM-DD): ");
                         LocalDate endDate = LocalDate.parse(scnr.nextLine());
 
-                        Car[] cars = carBookingService.getAvailableCars(startDate, endDate);
+                        List<Car> cars = carBookingService.getAvailableCars(startDate, endDate);
 
-                        if (cars.length == 0){
+                        if (cars.size() == 0){
                             System.out.println("There is no available cars for the provided dates.");
                         } else {
                             for (Car car : cars){
@@ -146,9 +147,9 @@ public class Main {
                         System.out.print("Please enter a valid end date (YYYY-MM-DD): ");
                         LocalDate endDate = LocalDate.parse(scnr.nextLine());
 
-                        Car[] electricCars = carBookingService.getAvailableElectricCars(startDate, endDate);
+                        List<Car> electricCars = carBookingService.getAvailableElectricCars(startDate, endDate);
 
-                        if (electricCars.length == 0){
+                        if (electricCars.size() == 0){
                             System.out.println("There is no available electric cars for the provided dates.");
                         } else {
                             for (Car car : electricCars){
