@@ -1,5 +1,7 @@
 package com.saraob.car;
 
+import java.util.List;
+
 public class CarService {
 
     CarDAO carDAO;
@@ -8,7 +10,7 @@ public class CarService {
         this.carDAO = carDAO;
     }
 
-    public Car[] getAllCars() {
+    public List<Car> getAllCars() {
         return carDAO.getAllCars();
     }
 }

@@ -1,8 +1,7 @@
 package com.saraob.booking;
 
 import java.io.*;
-import java.util.Arrays;
-import java.util.UUID;
+import java.util.*;
 
 public class CarBookingFileDataAccessService implements CarBookingDAO {
 
@@ -14,10 +13,8 @@ public class CarBookingFileDataAccessService implements CarBookingDAO {
 
     @Override
     public void saveBooking(CarBooking carBooking) {
-        CarBooking[] carBookings = getAllCarBookings();
-        int size = carBookings.length;
-        carBookings = Arrays.copyOf(carBookings, size + 1);
-        carBookings[size] = carBooking;
+        List<CarBooking> carBookings = new ArrayList<>(getAllCarBookings());
+        carBookings.add(carBooking);
 
         try {
             FileOutputStream fos = new FileOutputStream(filePath);
@@ -33,16 +30,16 @@ public class CarBookingFileDataAccessService implements CarBookingDAO {
     }
 
     @Override
-    public CarBooking[] getAllCarBookings() {
-        CarBooking[] carBookings = null;
+    public List<CarBooking> getAllCarBookings() {
+        List<CarBooking> carBookings = new ArrayList<>();
         File file = new File(filePath);
         if (!file.exists() || file.length() == 0) {
-            return new CarBooking[0];
+            return Collections.emptyList();
         }
         try {
             FileInputStream fis = new FileInputStream(filePath);
             ObjectInputStream ois = new ObjectInputStream(fis);
-            carBookings = (CarBooking[]) ois.readObject();
+            carBookings.addAll((List<CarBooking>) ois.readObject());
             ois.close();
             fis.close();
             return carBookings;
@@ -55,7 +52,7 @@ public class CarBookingFileDataAccessService implements CarBookingDAO {
     @Override
     public CarBooking getBookingById(UUID bookingId) {
         if (bookingId != null) {
-            CarBooking[] carBookings = getAllCarBookings();
+            List<CarBooking> carBookings = getAllCarBookings();
             for (CarBooking carBooking : carBookings) {
                 if (carBooking.getId().equals(bookingId)) {
                     return carBooking;
@@ -68,10 +65,10 @@ public class CarBookingFileDataAccessService implements CarBookingDAO {
     @Override
     public CarBooking deleteBookingById(UUID bookingId) {
         if (bookingId != null) {
-            CarBooking[] carBookings = getAllCarBookings();
-            for (int i = 0; i < carBookings.length; i++) {
-                if (carBookings[i].getId().equals(bookingId)) {
-                    carBookings[i].setStatus(BookingStatus.CANCELED);
+            List<CarBooking> carBookings = getAllCarBookings();
+            for (int i = 0; i < carBookings.size(); i++) {
+                if (carBookings.get(i).getId().equals(bookingId)) {
+                    carBookings.get(i).setStatus(BookingStatus.CANCELED);
                     System.out.println("Your booking was successfully cancelled.");
                     try {
                         FileOutputStream fos = new FileOutputStream(filePath);
@@ -82,7 +79,7 @@ public class CarBookingFileDataAccessService implements CarBookingDAO {
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
-                    return carBookings[i];
+                    return carBookings.get(i);
                 }
             }
             System.out.println("No booking with id " + bookingId + " was found.");

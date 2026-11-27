@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 public class CarFileDataAccessService implements CarDAO {
@@ -17,7 +20,7 @@ public class CarFileDataAccessService implements CarDAO {
     @Override
     public Car getCarById(UUID id) {
         if (id != null) {
-            Car[] cars = getAllCars();
+            List<Car> cars = getAllCars();
             for (Car car : cars) {
                 if (car.getId().equals(id)) {
                     return car;
@@ -28,16 +31,16 @@ public class CarFileDataAccessService implements CarDAO {
     }
 
     @Override
-    public Car[] getAllCars() {
-        Car[] cars = null;
+    public List<Car> getAllCars() {
+        List<Car> cars = new ArrayList<>();
         File file = new File(filePath);
         if (!file.exists() || file.length() == 0) {
-            return new Car[0];
+            return Collections.emptyList();
         }
         try {
             FileInputStream fis = new FileInputStream(filePath);
             ObjectInputStream ois = new ObjectInputStream(fis);
-            cars = (Car[]) ois.readObject();
+            cars = (List<Car>) ois.readObject();
             ois.close();
             fis.close();
             return cars;
