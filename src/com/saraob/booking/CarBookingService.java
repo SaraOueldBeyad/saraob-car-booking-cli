@@ -96,7 +96,7 @@ public class CarBookingService {
         if (userId != null) {
             for (int i = 0; i < carBookings.size(); i++) {
                 if (carBookings.get(i).getUser().getId().equals(userId)){
-                    userBooking.addAll(carBookings);
+                    userBooking.add(carBookings.get(i));
                 }
             }
         }
